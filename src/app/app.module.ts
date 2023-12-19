@@ -18,6 +18,7 @@ import { WeatherComponent } from '../components/weather/weather.component';
 import { appReducer } from 'src/store/reducer';
 import { CardComponent } from 'src/components/dashboard/card/card.component';
 import { ModalComponent } from 'src/components/dashboard/modal/modal.component';
+import { ForcastCardComponent } from '../components/forcast-card/forcast-card.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,6 +27,7 @@ import { ModalComponent } from 'src/components/dashboard/modal/modal.component';
     FavoritesComponent,
     CardComponent,
     ModalComponent,
+    ForcastCardComponent,
   ],
   imports: [
     BrowserModule,

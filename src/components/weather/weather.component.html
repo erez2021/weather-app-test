@@ -1,21 +1,24 @@
-<div>
-  <mat-form-field>
+<div class="container">
+  <div>
     <input
       type="text"
       matInput
       [formControl]="cityFormControl"
-      [matAutocomplete]="auto"
+      (input)="searchCity($event)"
+      (focus)="removePlaceholder()"
+      [placeholder]="placeholder"
     />
-  </mat-form-field>
-  <mat-autocomplete #auto="matAutocomplete">
     <mat-option
-      *ngFor="let city of filteredCities | async"
-      [value]="city"
-      (click)="onCitySelected(city)"
+      *ngFor="let location of filteredLocations"
+      [value]="location.city"
+      (click)="onCitySelected(location.city)"
     >
-      {{ city }}
+      <div class="option" (click)="onAddCityToFavorites(selectedCity)">
+        {{ location.city }} <span>{{ location.country }}</span>
+      </div>
     </mat-option>
-  </mat-autocomplete>
-  <div (click)="onAddCityToFavorites(selectedCity)">{{ selectedCity }}</div>
-  <app-card />
+  </div>
+  <div>
+    <app-forcast-card></app-forcast-card>
+  </div>
 </div>

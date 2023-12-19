@@ -6,6 +6,11 @@ import { Store } from '@ngrx/store';
 import { Actions } from 'src/store/actions';
 import { WeatherService } from 'src/services/weather.service';
 
+interface locationObject {
+  country: string;
+  city: string;
+}
+
 @Component({
   selector: 'app-weather',
   templateUrl: './weather.component.html',
@@ -16,15 +21,39 @@ export class WeatherComponent implements OnInit {
   selectedCity: string = 'Tel-aviv';
   selectedCityForcast: any = [];
   selectedCityWeather: string = '';
-  cities: string[] = [
-    'Tel-aviv',
-    'Tel-sheva',
-    'London',
-    'New york',
-    'Prague',
-    'Petah-tikva',
+  placeholder: string = 'City name';
+
+  cities: any = [
+    {
+      Country: { ID: 'BR', LocalizedName: 'Brazil' },
+      LocalizedName: 'Jerusalem',
+    },
+    {
+      Country: { ID: 'US', LocalizedName: 'USA' },
+      LocalizedName: 'Jerusalem',
+    },
+    {
+      Country: { ID: 'GB', LocalizedName: 'ENGLAND' },
+      LocalizedName: 'London',
+    },
+    {
+      Country: { ID: 'US', LocalizedName: 'USA' },
+      LocalizedName: 'New York',
+    },
+    {
+      Country: { ID: 'IL', LocalizedName: 'Israel' },
+      LocalizedName: 'Tel Aviv',
+    },
+    {
+      Country: { ID: 'IL', LocalizedName: 'Israel' },
+      LocalizedName: 'Jerusalem',
+    },
+    {
+      Country: { ID: 'FR', LocalizedName: 'France' },
+      LocalizedName: 'Paris',
+    },
   ];
-  filteredCities: Observable<string[]> | undefined;
+  filteredLocations: locationObject[] = [];
 
   constructor(
     private weatherService: WeatherService,
@@ -32,12 +61,11 @@ export class WeatherComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.filteredCities = this.cityFormControl.valueChanges.pipe(
-      startWith(''),
-      map((val: any) => this.filterArray(val))
-    );
+    // this.filteredLocations = this.cityFormControl.valueChanges.pipe(
+    //   startWith(''),
+    //   map((val: any) => this.filterArray(val))
+    // );
     // this.selectedCityForcast = await this.weatherService.get5DaysForcast('215854');
-
     // this.selectedCityWeather = await this.weatherService.getCurrentWeather(
     //   '215854'
     // );
@@ -45,18 +73,40 @@ export class WeatherComponent implements OnInit {
   }
 
   // consider moving to utils
-  filterArray(val: string): string[] {
-    return this.cities.filter(
-      (city: string) => city.toLowerCase().indexOf(val.toLowerCase()) === 0
-    );
-  }
+  // filterArray(val: string): string[] {
+  //   return this.cities.filter(
+  //     (city: string) => city.toLowerCase().indexOf(val.toLowerCase()) === 0
+  //   );
+  // }
 
   onCitySelected(city: string): void {
     this.selectedCity = city;
     this.store.dispatch(Actions.setSelectedCity({ selectedCity: city }));
+    this.filteredLocations = [];
   }
 
   onAddCityToFavorites(city: string): void {
     this.store.dispatch(Actions.addCityToFavorites({ city }));
+  }
+
+  async searchCity(e: any) {
+    console.log(e.target.value);
+    const searchWord = e.target.value;
+    if (searchWord.length >= 2) {
+      const result = await this.weatherService.getCities(searchWord);
+      this.filteredLocations = result.reduce((acc: any[], item: any) => {
+        acc.push({
+          country: item.Country.LocalizedName,
+          city: item.LocalizedName,
+        });
+        return acc;
+      }, []);
+    } else {
+      this.filteredLocations = [];
+    }
+  }
+
+  removePlaceholder() {
+    this.placeholder = '';
   }
 }

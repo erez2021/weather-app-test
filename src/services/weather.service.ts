@@ -13,7 +13,7 @@ export class WeatherService {
       const response = await axios.get(
         `${BASE_URL}locations/v1/cities/autocomplete?apikey=${API_KEY}&q=${cityQueryString}`
       );
-      console.log('response: ', response);
+      return response.data;
     } catch (error) {
       console.log('Error: ', error);
     }

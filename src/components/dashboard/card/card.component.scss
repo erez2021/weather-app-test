@@ -14,3 +14,10 @@ mat-card {
 .mdc-card__media {
   margin: 0 auto;
 }
+.white-icon {
+  filter: brightness(0) invert(1);
+  width: 40px;
+  height: fit-content;
+  position: absolute;
+  right: 15px;
+}

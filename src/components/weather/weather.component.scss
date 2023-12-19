@@ -1,0 +1,31 @@
+.option {
+  color: black;
+  text-align: left;
+  font-size: 16px;
+  //   height: 15px;
+  max-width: 80%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+span {
+  font-size: 12px;
+}
+.mat-mdc-option {
+  display: unset;
+}
+
+input {
+  width: 80%;
+  box-sizing: border-box;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  border-color: #3498db;
+}

@@ -1,8 +1,16 @@
 <header>
   <nav>
-    <ul>
-      <li><a routerLink="/">Weather</a></li>
-      <li><a routerLink="/favorites">Favorites</a></li>
-    </ul>
+    <a
+      routerLink="/"
+      routerLinkActive="activeLink"
+      [ngClass]="{ activeLink: isActiveLink('/') }"
+      >Weather</a
+    >
+    <a
+      routerLink="/favorites"
+      routerLinkActive="activeLink"
+      [ngClass]="{ activeLink: isActiveLink('/favorites') }"
+      >Favorites</a
+    >
   </nav>
 </header>
