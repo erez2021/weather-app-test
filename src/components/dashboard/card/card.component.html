@@ -1,0 +1,29 @@
+<!-- <mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>{{ icon }}</mat-icon>
+    </div>
+    <div mat-card-title>{{ title }}</div>
+    <div mat-card-subtitle>{{ subtitle }}</div>
+  </mat-card-header>
+  <img mat-card-image [src]="imageUrl" alt="Card Image" />
+</mat-card> -->
+
+<mat-card class="card">
+  <mat-card-header>
+    <mat-card-title>day</mat-card-title>
+    <mat-card-subtitle>date</mat-card-subtitle>
+  </mat-card-header>
+  <img mat-card-image [src]="imageUrl" alt="Card Image" />
+  <mat-card-content>
+    <p>decription</p>
+    <div>Temp</div>
+    <p>humadity</p>
+
+    <div>night</div>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-button color="primary">EXPAND</button>
+  </mat-card-actions>
+</mat-card>

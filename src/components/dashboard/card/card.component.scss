@@ -1,0 +1,16 @@
+mat-card {
+  max-width: 250px;
+  height: 400px;
+  margin: 10px;
+  text-align: center;
+}
+.mat-mdc-card {
+  background-color: lightskyblue;
+  color: white;
+}
+.mat-mdc-card-header {
+  background-color: skyblue;
+}
+.mdc-card__media {
+  margin: 0 auto;
+}

@@ -1,0 +1,11 @@
+<div>
+  <div *ngIf="favoriteCities.length; else noFavorites">
+    <div>
+      <div *ngFor="let city of favoriteCities">{{ city }}</div>
+    </div>
+  </div>
+
+  <ng-template #noFavorites>
+    <p>No favorite cities yet.</p>
+  </ng-template>
+</div>
