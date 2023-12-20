@@ -11,6 +11,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatRadioModule } from '@angular/material/radio';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from '../components/header/header.component';
@@ -18,8 +20,9 @@ import { WeatherComponent } from '../components/weather/weather.component';
 import { appReducer } from 'src/store/reducer';
 import { CardComponent } from 'src/components/dashboard/card/card.component';
 import { ModalComponent } from 'src/components/dashboard/modal/modal.component';
-import { ForcastCardComponent } from '../components/forcast-card/forcast-card.component';
+import { ForecastCardComponent } from '../components/forecast-card/forecast-card.component';
 @NgModule({
+  entryComponents: [ModalComponent],
   declarations: [
     AppComponent,
     HeaderComponent,
@@ -27,7 +30,7 @@ import { ForcastCardComponent } from '../components/forcast-card/forcast-card.co
     FavoritesComponent,
     CardComponent,
     ModalComponent,
-    ForcastCardComponent,
+    ForecastCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,6 +43,8 @@ import { ForcastCardComponent } from '../components/forcast-card/forcast-card.co
     MatCardModule,
     MatIconModule,
     MatFormFieldModule,
+    MatDialogModule,
+    MatRadioModule,
     StoreModule.forRoot({ appState: appReducer }),
   ],
   providers: [],

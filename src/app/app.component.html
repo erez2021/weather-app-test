@@ -1,5 +1,18 @@
 <div class="app-container">
   <app-header />
+  <div class="radio-buttons">
+    <mat-radio-group>
+      <mat-radio-button value="Celsius" (change)="measureSystemChange($event)"
+        >Celsius</mat-radio-button
+      >
+      <mat-radio-button
+        value="Fahrenheit"
+        (change)="measureSystemChange($event)"
+        >Fahrenheit</mat-radio-button
+      >
+    </mat-radio-group>
+  </div>
+  <div (click)="openDialog()">open</div>
 </div>
 
 <router-outlet></router-outlet>

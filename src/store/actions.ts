@@ -8,8 +8,13 @@ const addCityToFavorites = createAction(
   'ADD_CITY_TO_FAVORITES',
   props<{ city: string }>()
 );
+const setMeasureSystem = createAction(
+  'SET_MEASURE_SYSTEM',
+  props<{ measureSystem: string }>()
+);
 
 export const Actions = {
   setSelectedCity,
   addCityToFavorites,
+  setMeasureSystem,
 };

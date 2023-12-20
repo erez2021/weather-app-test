@@ -30,7 +30,7 @@ export class WeatherService {
     }
   };
 
-  get5DaysForcast = async (locationKey: string) => {
+  get5DaysForecast = async (locationKey: string) => {
     try {
       const response = await axios.get(
         `${BASE_URL}forecasts/v1/daily/5day/${locationKey}?apikey=${API_KEY}&details=true`

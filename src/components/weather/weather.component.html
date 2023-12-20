@@ -19,6 +19,10 @@
     </mat-option>
   </div>
   <div>
-    <app-forcast-card></app-forcast-card>
+    <app-forecast-card
+      [selectedCityForecast]="selectedCityForecast"
+      [selectedCity]="selectedCity"
+      [measureSystem]="measureSystem"
+    ></app-forecast-card>
   </div>
 </div>

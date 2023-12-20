@@ -11,5 +11,9 @@ export const appReducer = createReducer(
   on(Actions.addCityToFavorites, (lastState, { city }) => ({
     ...lastState,
     favoriteCities: [...lastState.favoriteCities, city],
+  })),
+  on(Actions.setMeasureSystem, (lastState, { measureSystem }) => ({
+    ...lastState,
+    measureSystem,
   }))
 );

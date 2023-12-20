@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
+
 import { Actions } from 'src/store/actions';
 import { WeatherService } from 'src/services/weather.service';
-
-interface locationObject {
-  country: string;
-  city: string;
-}
+import { forecast } from 'src/models/forecast.interface';
+import { location } from 'src/models/location.interface';
+// import { generateRandomId } from 'src/utils/utils';
 
 @Component({
   selector: 'app-weather',
@@ -18,9 +15,10 @@ interface locationObject {
 })
 export class WeatherComponent implements OnInit {
   cityFormControl = new FormControl('', Validators.required);
-  selectedCity: string = 'Tel-aviv';
-  selectedCityForcast: any = [];
+  selectedCity: string = 'Tel Aviv';
+  selectedCityForecast: any = [];
   selectedCityWeather: string = '';
+  measureSystem: string = 'Celcius';
   placeholder: string = 'City name';
 
   cities: any = [
@@ -53,31 +51,38 @@ export class WeatherComponent implements OnInit {
       LocalizedName: 'Paris',
     },
   ];
-  filteredLocations: locationObject[] = [];
+  filteredLocations: location[] = [];
 
   constructor(
     private weatherService: WeatherService,
-    private store: Store<{ selectedCity: string }>
-  ) {}
 
-  async ngOnInit() {
-    // this.filteredLocations = this.cityFormControl.valueChanges.pipe(
-    //   startWith(''),
-    //   map((val: any) => this.filterArray(val))
-    // );
-    // this.selectedCityForcast = await this.weatherService.get5DaysForcast('215854');
-    // this.selectedCityWeather = await this.weatherService.getCurrentWeather(
-    //   '215854'
-    // );
-    // console.log(this.selectedCityWeather);
+    private store: Store<{ selectedCity: string; measureSystem: string }>
+  ) {
+    this.store.subscribe((data: any) => {
+      console.log(data.appState.measureSystem);
+      this.measureSystem = data.appState.measureSystem;
+    });
   }
 
-  // consider moving to utils
-  // filterArray(val: string): string[] {
-  //   return this.cities.filter(
-  //     (city: string) => city.toLowerCase().indexOf(val.toLowerCase()) === 0
-  //   );
-  // }
+  async ngOnInit() {
+    const selectedCityForecast = await this.weatherService.get5DaysForecast(
+      '215854'
+    );
+    this.selectedCityForecast = selectedCityForecast.map((item: forecast) => {
+      return {
+        locationName: this.selectedCity,
+        date: item.Date,
+        phrase: item.Day.IconPhrase,
+        maxTemperature: item.Temperature.Maximum.Value,
+        minTemperature: item.Temperature.Minimum.Value,
+      };
+    });
+    console.log(this.selectedCityForecast);
+    this.selectedCityWeather = await this.weatherService.getCurrentWeather(
+      '215854'
+    );
+    console.log(this.selectedCityWeather);
+  }
 
   onCitySelected(city: string): void {
     this.selectedCity = city;
