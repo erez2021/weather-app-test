@@ -1,11 +1,18 @@
+import { City } from 'src/models/city.interface';
+
 export interface IAppState {
-  selectedCity: string;
-  favoriteCities: string[];
+  selectedCity: City;
+  favoriteCities: City[];
   measureSystem: string;
 }
 
 export const INITIAL_STATE: IAppState = {
-  selectedCity: 'Tel-aviv',
+  selectedCity: {
+    id: '215854',
+    name: 'Tel Aviv',
+    currentWeather: {},
+    isFavorite: false,
+  },
   favoriteCities: [],
   measureSystem: 'Celsius',
 };

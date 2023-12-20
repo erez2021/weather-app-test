@@ -6,7 +6,7 @@ import { Actions } from 'src/store/actions';
 import { WeatherService } from 'src/services/weather.service';
 import { forecast } from 'src/models/forecast.interface';
 import { location } from 'src/models/location.interface';
-// import { generateRandomId } from 'src/utils/utils';
+import { City } from 'src/models/city.interface';
 
 @Component({
   selector: 'app-weather',
@@ -15,11 +15,17 @@ import { location } from 'src/models/location.interface';
 })
 export class WeatherComponent implements OnInit {
   cityFormControl = new FormControl('', Validators.required);
-  selectedCity: string = 'Tel Aviv';
+  selectedCity: City = {
+    id: '215854',
+    name: 'Tel Aviv',
+    currentWeather: {},
+    isFavorite: false,
+  };
+  // selectedCity: string = 'Tel Aviv';
   selectedCityForecast: any = [];
   selectedCityWeather: string = '';
   measureSystem: string = 'Celcius';
-  placeholder: string = 'City name';
+  placeholder: string = 'Search city';
 
   cities: any = [
     {
@@ -56,10 +62,9 @@ export class WeatherComponent implements OnInit {
   constructor(
     private weatherService: WeatherService,
 
-    private store: Store<{ selectedCity: string; measureSystem: string }>
+    private store: Store<{ measureSystem: string }>
   ) {
     this.store.subscribe((data: any) => {
-      console.log(data.appState.measureSystem);
       this.measureSystem = data.appState.measureSystem;
     });
   }
@@ -70,7 +75,7 @@ export class WeatherComponent implements OnInit {
     );
     this.selectedCityForecast = selectedCityForecast.map((item: forecast) => {
       return {
-        locationName: this.selectedCity,
+        locationName: this.selectedCity.name,
         date: item.Date,
         phrase: item.Day.IconPhrase,
         maxTemperature: item.Temperature.Maximum.Value,
@@ -78,21 +83,19 @@ export class WeatherComponent implements OnInit {
       };
     });
     console.log(this.selectedCityForecast);
-    this.selectedCityWeather = await this.weatherService.getCurrentWeather(
-      '215854'
-    );
-    console.log(this.selectedCityWeather);
   }
 
   onCitySelected(city: string): void {
-    this.selectedCity = city;
-    this.store.dispatch(Actions.setSelectedCity({ selectedCity: city }));
+    this.selectedCity.name = city;
+    this.store.dispatch(
+      Actions.setSelectedCity({ selectedCity: this.selectedCity })
+    );
     this.filteredLocations = [];
   }
 
-  onAddCityToFavorites(city: string): void {
-    this.store.dispatch(Actions.addCityToFavorites({ city }));
-  }
+  // onAddCityToFavorites(city: string): void {
+  //   this.store.dispatch(Actions.addCityToFavorites({ city }));
+  // }
 
   async searchCity(e: any) {
     console.log(e.target.value);

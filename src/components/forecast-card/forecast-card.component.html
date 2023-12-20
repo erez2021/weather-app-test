@@ -2,14 +2,10 @@
   <div class="header">5 DAYS FORECAST</div>
   <div class="top-section">
     <div>
-      <h2>{{ selectedCity }}</h2>
+      <h1>{{ selectedCity.name }}</h1>
     </div>
     <div>
-      <img
-        src="assets/icons/heart.png"
-        alt="heart"
-        (click)="toggleAddToFavorites()"
-      />
+      <img [src]="toggledImage" alt="heart" (click)="toggleAddToFavorites()" />
     </div>
   </div>
   <div class="bottom-section" style="display: flex">

@@ -44,3 +44,14 @@ mat-card {
 .night {
   color: darkslategrey;
 }
+@media (max-width: 980px) {
+  mat-card {
+    height: unset;
+  }
+  .card-image {
+    max-width: 20%;
+  }
+  .symbol {
+    width: 10%;
+  }
+}
