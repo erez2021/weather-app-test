@@ -1,5 +1,5 @@
 .option {
-  color: black;
+  color: darkslategrey;
   text-align: left;
   font-size: 16px;
   max-width: 80%;
@@ -7,7 +7,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   &:hover {
-    background-color: lightgray;
+    background-color: palegoldenrod;
   }
 }
 span {

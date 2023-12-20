@@ -43,6 +43,12 @@ export class ForecastCardComponent implements OnInit {
       ...this.selectedCity,
       isFavorite: !this.selectedCity.isFavorite,
     };
+    const audio = new Audio(
+      this.selectedCity.isFavorite
+        ? 'assets/sounds/sound.mp3'
+        : 'assets/sounds/pop.mp3'
+    );
+    audio.play();
     this.store.dispatch(
       Actions.addCityToFavorites({ city: this.selectedCity })
     );

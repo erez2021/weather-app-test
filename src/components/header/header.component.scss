@@ -1,5 +1,5 @@
 header {
-  background-color: #333;
+  background-color: gold;
   padding: 10px 20px;
 }
 
@@ -8,12 +8,13 @@ nav {
 }
 
 nav a {
-  color: white;
+  color: dodgerblue;
+  font-weight: 500;
   text-decoration: none;
   padding: 10px;
   border-radius: 5px;
   margin-left: 10px;
-  font-size: 16px;
+  font-size: 18px;
   transition: background-color 0.3s;
   &:hover {
     opacity: 0.8;
