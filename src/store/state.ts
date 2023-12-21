@@ -11,7 +11,6 @@ export const INITIAL_STATE: IAppState = {
     id: '215854',
     name: 'Tel Aviv',
     currentWeather: {},
-    isFavorite: false,
   },
   favoriteCities: [],
   measureSystem: 'Celsius',

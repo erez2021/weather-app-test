@@ -1,6 +1,11 @@
 <mat-card class="card">
   <mat-card-header>
-    <mat-card-title>{{ getDay(dayForecast.date) }}</mat-card-title>
+    <mat-card-title *ngIf="dayForecast; else cityTitle">{{
+      getDay(dayForecast.date)
+    }}</mat-card-title>
+    <ng-template #cityTitle>
+      <mat-card-title>{{ cityDetails.name }}</mat-card-title>
+    </ng-template>
   </mat-card-header>
   <img
     mat-card-image

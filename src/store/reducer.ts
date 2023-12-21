@@ -9,19 +9,31 @@ export const appReducer = createReducer(
     selectedCity,
   })),
   on(Actions.addCityToFavorites, (lastState, { city }) => {
-    const isCityAlreadyAdded = lastState.favoriteCities.find(
+    const cityIndex = lastState.favoriteCities.findIndex(
       (favoriteCity) => favoriteCity.id === city.id
     );
-    return {
-      ...lastState,
-      favoriteCities: isCityAlreadyAdded
-        ? lastState.favoriteCities.map((favoriteCity) =>
-            favoriteCity.id === city.id
-              ? { ...favoriteCity, isFavorite: city.isFavorite }
-              : favoriteCity
-          )
-        : [...lastState.favoriteCities, city],
-    };
+    const favoriteCities =
+      cityIndex !== -1
+        ? [
+            ...lastState.favoriteCities.slice(0, cityIndex),
+            ...lastState.favoriteCities.slice(cityIndex + 1),
+          ]
+        : [...lastState.favoriteCities, city];
+
+    return { ...lastState, favoriteCities };
+  }),
+  on(Actions.updateFavoriteCities, (lastState, { city }) => {
+    const cityIndex = lastState.favoriteCities.findIndex(
+      (favoriteCity) => favoriteCity.id === city.id
+    );
+    const updatedFavoriteCities = [...lastState.favoriteCities];
+    if (cityIndex !== -1) {
+      updatedFavoriteCities[cityIndex].currentWeather = {
+        ...updatedFavoriteCities[cityIndex],
+        currentWeather: city.currentWeather,
+      };
+    }
+    return { ...lastState, favoriteCities: updatedFavoriteCities };
   }),
   on(Actions.setMeasureSystem, (lastState, { measureSystem }) => ({
     ...lastState,

@@ -13,38 +13,38 @@ import { City } from 'src/models/city.interface';
 export class ForecastCardComponent implements OnInit {
   @Input() selectedCityForecast?: any[] = [];
   @Input() selectedCity: City = {
-    id: '215854',
-    name: 'Tel Aviv',
+    id: '',
+    name: '',
     currentWeather: {},
-    isFavorite: false,
   };
   @Input() measureSystem: string = 'Celsius';
   favoriteCities: City[] = [];
   toggledImage: string = 'assets/icons/heart.png';
   mockData = [{}];
-  constructor(private store: Store<{ favoriteCities: City[] }>) {
+  constructor(
+    private store: Store<{ favoriteCities: City[]; selectedCity: City }>
+  ) {
     this.store.subscribe((data: any) => {
-      console.log(data.appState.favoriteCities);
       this.favoriteCities = data.appState.favoriteCities;
+      const isCityInFavoties = this.favoriteCities.find(
+        (city: City) => city.id === data.appState.selectedCity.id
+      );
+      this.toggledImage = isCityInFavoties
+        ? 'assets/icons/redheart.png'
+        : 'assets/icons/heart.png';
     });
   }
 
   ngOnInit(): void {
-    console.log(this.selectedCityForecast);
+    console.log(this.selectedCity);
   }
   toggleAddToFavorites() {
     this.toggledImage =
       this.toggledImage === 'assets/icons/heart.png'
         ? 'assets/icons/redheart.png'
         : 'assets/icons/heart.png';
-    console.log(this.toggledImage);
-
-    this.selectedCity = {
-      ...this.selectedCity,
-      isFavorite: !this.selectedCity.isFavorite,
-    };
     const audio = new Audio(
-      this.selectedCity.isFavorite
+      this.toggledImage === 'assets/icons/redheart.png'
         ? 'assets/sounds/sound.mp3'
         : 'assets/sounds/pop.mp3'
     );

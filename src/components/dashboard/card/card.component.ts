@@ -15,6 +15,7 @@ export class CardComponent {
   @Input() measureSystem: string = 'Celsius';
   @Input() title: string = '';
   @Input() subtitle: string = '';
+  @Input() cityDetails: any;
 
   getDay(dateString: string) {
     return getDayByDate(dateString);

@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalComponent } from 'src/components/dashboard/modal/modal.component';
 import axios from 'axios';
 
 const API_KEY = 'tEEavAr1t1U5mu4Gbpd9fcXA7YXkidKw';
@@ -8,6 +10,16 @@ const BASE_URL = 'http://dataservice.accuweather.com/';
   providedIn: 'root',
 })
 export class WeatherService {
+  constructor(private dialog: MatDialog) {}
+
+  private handleHttpError(error: any): never {
+    console.error('HTTP Request Error:', error);
+    this.dialog.open(ModalComponent, {
+      data: { errorMessage: error },
+    });
+    throw error;
+  }
+
   getCities = async (cityQueryString: string) => {
     try {
       const response = await axios.get(
@@ -15,7 +27,7 @@ export class WeatherService {
       );
       return response.data;
     } catch (error) {
-      console.log('Error: ', error);
+      return this.handleHttpError(error);
     }
   };
 
@@ -26,7 +38,7 @@ export class WeatherService {
       );
       return response.data;
     } catch (error) {
-      console.log('Error: ', error);
+      return this.handleHttpError(error);
     }
   };
 
@@ -35,11 +47,9 @@ export class WeatherService {
       const response = await axios.get(
         `${BASE_URL}forecasts/v1/daily/5day/${locationKey}?apikey=${API_KEY}&details=true`
       );
-      console.log(response.data.DailyForecasts);
-
       return response?.data.DailyForecasts;
     } catch (error) {
-      console.log('Error: ', error);
+      return this.handleHttpError(error);
     }
   };
 }

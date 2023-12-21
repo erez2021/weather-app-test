@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 
 import { Actions } from 'src/store/actions';
@@ -19,91 +20,72 @@ export class WeatherComponent implements OnInit {
     id: '215854',
     name: 'Tel Aviv',
     currentWeather: {},
-    isFavorite: false,
   };
-  // selectedCity: string = 'Tel Aviv';
+
   selectedCityForecast: any = [];
   selectedCityWeather: string = '';
   measureSystem: string = 'Celcius';
   placeholder: string = 'Search city';
 
-  cities: any = [
-    {
-      Country: { ID: 'BR', LocalizedName: 'Brazil' },
-      LocalizedName: 'Jerusalem',
-    },
-    {
-      Country: { ID: 'US', LocalizedName: 'USA' },
-      LocalizedName: 'Jerusalem',
-    },
-    {
-      Country: { ID: 'GB', LocalizedName: 'ENGLAND' },
-      LocalizedName: 'London',
-    },
-    {
-      Country: { ID: 'US', LocalizedName: 'USA' },
-      LocalizedName: 'New York',
-    },
-    {
-      Country: { ID: 'IL', LocalizedName: 'Israel' },
-      LocalizedName: 'Tel Aviv',
-    },
-    {
-      Country: { ID: 'IL', LocalizedName: 'Israel' },
-      LocalizedName: 'Jerusalem',
-    },
-    {
-      Country: { ID: 'FR', LocalizedName: 'France' },
-      LocalizedName: 'Paris',
-    },
-  ];
   filteredLocations: location[] = [];
 
   constructor(
     private weatherService: WeatherService,
 
-    private store: Store<{ measureSystem: string }>
+    private store: Store<{ measureSystem: string; selectedCity: City }>
   ) {
     this.store.subscribe((data: any) => {
       this.measureSystem = data.appState.measureSystem;
+      if (this.selectedCity.id !== data.appState.selectedCity.id) {
+        this.selectedCity = data.appState.selectedCity;
+        this.load5DaysForecast();
+      }
     });
   }
 
   async ngOnInit() {
-    const selectedCityForecast = await this.weatherService.get5DaysForecast(
-      '215854'
-    );
-    this.selectedCityForecast = selectedCityForecast.map((item: forecast) => {
-      return {
-        locationName: this.selectedCity.name,
-        date: item.Date,
-        phrase: item.Day.IconPhrase,
-        maxTemperature: item.Temperature.Maximum.Value,
-        minTemperature: item.Temperature.Minimum.Value,
-      };
-    });
+    this.load5DaysForecast();
     console.log(this.selectedCityForecast);
   }
 
-  onCitySelected(city: string): void {
-    this.selectedCity.name = city;
+  async load5DaysForecast() {
+    try {
+      const selectedCityForecast = await this.weatherService.get5DaysForecast(
+        this.selectedCity.id
+      );
+      this.selectedCityForecast = selectedCityForecast.map((item: forecast) => {
+        return {
+          locationName: this.selectedCity.name,
+          date: item.Date,
+          phrase: item.Day.IconPhrase,
+          maxTemperature: item.Temperature.Maximum.Value,
+          minTemperature: item.Temperature.Minimum.Value,
+        };
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  onCitySelected(city: string, id: string): void {
+    const newSelectedCity = {
+      id,
+      name: city,
+      currentWeather: {},
+    };
     this.store.dispatch(
-      Actions.setSelectedCity({ selectedCity: this.selectedCity })
+      Actions.setSelectedCity({ selectedCity: newSelectedCity })
     );
     this.filteredLocations = [];
   }
 
-  // onAddCityToFavorites(city: string): void {
-  //   this.store.dispatch(Actions.addCityToFavorites({ city }));
-  // }
-
   async searchCity(e: any) {
-    console.log(e.target.value);
     const searchWord = e.target.value;
     if (searchWord.length >= 2) {
       const result = await this.weatherService.getCities(searchWord);
       this.filteredLocations = result.reduce((acc: any[], item: any) => {
         acc.push({
+          id: item.Key,
           country: item.Country.LocalizedName,
           city: item.LocalizedName,
         });

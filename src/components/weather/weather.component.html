@@ -11,7 +11,7 @@
     <mat-option
       *ngFor="let location of filteredLocations"
       [value]="location.city"
-      (click)="onCitySelected(location.city)"
+      (click)="onCitySelected(location.city, location.id)"
     >
       <div class="option">
         {{ location.city }} <span>{{ location.country }}</span>
